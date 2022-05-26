@@ -1,0 +1,1 @@
+export { ExplorePage as default} from 'views/explore/pages/ExplorePage'

@@ -1,7 +1,7 @@
 import type { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
-import useTokenBalance from "../hooks/useTokenBalance";
-import { parseBalance } from "../util";
+import useTokenBalance from "hooks/useTokenBalance";
+import { parseBalance } from "utils";
 
 type TokenBalanceProps = {
   tokenAddress: string;
@@ -10,7 +10,7 @@ type TokenBalanceProps = {
 
 const TokenBalance = ({ tokenAddress, symbol }: TokenBalanceProps) => {
   const { account } = useWeb3React<Web3Provider>();
-  const { data } = useTokenBalance(account, tokenAddress);
+  const { data } = useTokenBalance(account || "", tokenAddress);
 
   return (
     <p>

@@ -1,0 +1,1 @@
+export { BuyBookPage as default} from "views/buy-book/pages/BuyBookPage"

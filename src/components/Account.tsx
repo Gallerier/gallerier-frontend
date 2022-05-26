@@ -1,18 +1,55 @@
 import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError } from "@web3-react/injected-connector";
 import { useEffect, useState } from "react";
-import { injected } from "../connectors";
-import useENSName from "../hooks/useENSName";
-import useMetaMaskOnboarding from "../hooks/useMetaMaskOnboarding";
-import { formatEtherscanLink, shortenHex } from "../util";
+import { injected } from "connectors";
+import useENSName from "hooks/useENSName";
+import useMetaMaskOnboarding from "hooks/useMetaMaskOnboarding";
+import { formatEtherscanLink, shortenHex } from "utils";
+
+type CustomButtonProps = {
+  children: React.ReactNode;
+  onClick?:any;
+  disabled?: boolean;
+};
+const CustomButton = ({ children, onClick, disabled = false }:CustomButtonProps) => {
+  return (
+    <button
+      disabled={disabled}
+      style={{
+        boxSizing: "border-box",
+
+        width: "157px",
+        height: "33px",
+
+        background:
+          "radial-gradient(97.63% 897.91% at 0% 0%, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.06) 100%)",
+        border: "1px solid rgba(255, 255, 255, 0.3)",
+        backdropFilter: "blur(12px)",
+        /* Note: "backdrop-filter has minimal browser support */
+
+        borderRadius: "20px",
+      }}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+};
 
 type AccountProps = {
   triedToEagerConnect: boolean;
 };
 
 const Account = ({ triedToEagerConnect }: AccountProps) => {
-  const { active, error, activate, chainId, account, setError } =
-    useWeb3React();
+  const {
+    active,
+    error,
+    activate,
+    chainId = 1,
+    account,
+    setError,
+    deactivate,
+  } = useWeb3React();
 
   const {
     isMetaMaskInstalled,
@@ -30,7 +67,7 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
     }
   }, [active, error, stopOnboarding]);
 
-  const ENSName = useENSName(account);
+  const ENSName = useENSName(account || "");
 
   if (error) {
     return null;
@@ -42,9 +79,9 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
 
   if (typeof account !== "string") {
     return (
-      <div>
+      <>
         {isWeb3Available ? (
-          <button
+          <CustomButton
             disabled={connecting}
             onClick={() => {
               setConnecting(true);
@@ -59,25 +96,21 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
               });
             }}
           >
-            {isMetaMaskInstalled ? "Connect to MetaMask" : "Connect to Wallet"}
-          </button>
+            Connect Wallet
+          </CustomButton>
         ) : (
-          <button onClick={startOnboarding}>Install Metamask</button>
+          <CustomButton onClick={startOnboarding}>
+            Install Metamask
+          </CustomButton>
         )}
-      </div>
+      </>
     );
   }
 
   return (
-    <a
-      {...{
-        href: formatEtherscanLink("Account", [chainId, account]),
-        target: "_blank",
-        rel: "noopener noreferrer",
-      }}
-    >
+    <CustomButton onClick={deactivate}>
       {ENSName || `${shortenHex(account, 4)}`}
-    </a>
+    </CustomButton>
   );
 };
 
