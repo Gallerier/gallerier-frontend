@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { BookSrcMockup } from "utils/bookMockup";
-import Davatar from "@davatar/react";
 import { Jazzicon } from "./Jazzicon";
 
 type BookCardProps = {
