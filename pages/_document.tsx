@@ -36,12 +36,12 @@ class CustomDocument extends Document {
           {/* general metadata */}
           <meta
             name="keywords"
-            content="nft, marketplace, terra, blockchain, knowhere, art, spaceloot"
+            content="gallerier, nft, marketplace"
             key="keywords"
           />
           <meta
             name="description"
-            content="NFT marketplace on Terra blockchain. A place where you browse for fascinating NFTs, or list your own for sale. Explore now at Knowhere Art"
+            content="Make your NFTs more meaningful, Unlock new possibilities in the marketplace"
             key="description"
           />
         </Head>
